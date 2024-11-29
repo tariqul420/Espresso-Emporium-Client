@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { FaEye, FaPencil } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
+import { Link } from "react-router-dom";
 import Swal from 'sweetalert2'
 
 const CoffeeCart = ({ coffee, coffees, setCoffees }) => {
@@ -49,7 +50,9 @@ const CoffeeCart = ({ coffee, coffees, setCoffees }) => {
             </div>
             <div className="flex flex-col gap-4">
                 <FaEye size={20} color="#d2b48c" className="cursor-pointer" />
-                <FaPencil size={20} color="#3c393b" className="cursor-pointer" />
+                <Link to={`/update-coffee/${_id}`}>
+                    <FaPencil size={20} color="#3c393b" className="cursor-pointer" />
+                </Link>
                 <MdDelete onClick={() => handelDelate(_id)} size={20} color="#FF0000" className="cursor-pointer" />
             </div>
         </div>

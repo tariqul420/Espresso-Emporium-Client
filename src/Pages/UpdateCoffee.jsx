@@ -1,10 +1,15 @@
+import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const AddCoffee = () => {
+const UpdateCoffee = () => {
+    const coffeeData = useLoaderData()
+    const [coffee, setCoffee] = useState(coffeeData)
 
-    const handelAddCoffee = (e) => {
+    const { name, chef, supplier, taste, category, details, photo, price } = coffee
+
+    const handelUpdateCoffee = (e) => {
         e.preventDefault()
         const form = e.target
         const name = form.name.value
@@ -18,8 +23,8 @@ const AddCoffee = () => {
 
         const productData = { name, chef, supplier, taste, category, details, photo, price }
 
-        fetch("http://localhost:5000/coffees", {
-            method: "POST",
+        fetch(`http://localhost:5000/coffees/${coffee._id}`, {
+            method: "PUT",
             headers: {
                 'content-type': 'application/json'
             },
@@ -28,13 +33,14 @@ const AddCoffee = () => {
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                if (data.insertedId) {
+                if (data.modifiedCount) {
                     Swal.fire({
                         title: 'Success!',
-                        text: 'Coffee Added Successfully.',
+                        text: 'Coffee updated Successfully.',
                         icon: 'success',
                         confirmButtonText: 'Close'
                     })
+                    setCoffee(productData)
                 }
             })
         form.reset()
@@ -51,13 +57,15 @@ const AddCoffee = () => {
 
             <div className="bg-color-bg shadow-lg rounded-lg p-8">
                 <h1 className="font-extrabold text-4xl text-center text-gray-800 mb-4">
-                    Add New Coffee
+                    Update Existing Coffee Details
                 </h1>
                 <p className="text-center text-gray-600 mb-8">
                     It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here.
                 </p>
 
-                <form onSubmit={handelAddCoffee} className="space-y-6">
+                <h2 className="font-extrabold text-2xl text-center text-color-primary mb-4">{coffee.name}</h2>
+
+                <form onSubmit={handelUpdateCoffee} className="space-y-6">
                     {/* Row 1 */}
                     <div className="flex flex-col md:flex-row gap-6">
                         <div className="w-full">
@@ -68,6 +76,7 @@ const AddCoffee = () => {
                                 className="w-full border border-gray-300 rounded-md h-12 px-4 mt-2 focus:ring focus:ring-[#d2b48c] transition"
                                 type="text"
                                 name="name"
+                                defaultValue={name}
                                 placeholder="Enter coffee name"
                             />
                         </div>
@@ -79,6 +88,7 @@ const AddCoffee = () => {
                                 className="w-full border border-gray-300 rounded-md h-12 px-4 mt-2 focus:ring focus:ring-[#d2b48c] transition"
                                 type="text"
                                 name="chef"
+                                defaultValue={chef}
                                 placeholder="Enter coffee chef"
                             />
                         </div>
@@ -94,6 +104,7 @@ const AddCoffee = () => {
                                 className="w-full border border-gray-300 rounded-md h-12 px-4 mt-2 focus:ring focus:ring-[#d2b48c] transition"
                                 type="text"
                                 name="supplier"
+                                defaultValue={supplier}
                                 placeholder="Enter coffee Supplier"
                             />
                         </div>
@@ -105,6 +116,7 @@ const AddCoffee = () => {
                                 className="w-full border border-gray-300 rounded-md h-12 px-4 mt-2 focus:ring focus:ring-[#d2b48c] transition"
                                 type="text"
                                 name="taste"
+                                defaultValue={taste}
                                 placeholder="Enter coffee Taste"
                             />
                         </div>
@@ -120,6 +132,7 @@ const AddCoffee = () => {
                                 className="w-full border border-gray-300 rounded-md h-12 px-4 mt-2 focus:ring focus:ring-[#d2b48c] transition"
                                 type="text"
                                 name="category"
+                                defaultValue={category}
                                 placeholder="Enter coffee Category"
                             />
                         </div>
@@ -131,6 +144,7 @@ const AddCoffee = () => {
                                 className="w-full border border-gray-300 rounded-md h-12 px-4 mt-2 focus:ring focus:ring-[#d2b48c] transition"
                                 type="text"
                                 name="details"
+                                defaultValue={details}
                                 placeholder="Enter coffee Details"
                             />
                         </div>
@@ -146,6 +160,7 @@ const AddCoffee = () => {
                                 className="w-full border border-gray-300 rounded-md h-12 px-4 mt-2 focus:ring focus:ring-[#d2b48c] transition"
                                 type="text"
                                 name="price"
+                                defaultValue={price}
                                 placeholder="Enter coffee Price"
                             />
                         </div>
@@ -157,6 +172,7 @@ const AddCoffee = () => {
                                 className="w-full border border-gray-300 rounded-md h-12 px-4 mt-2 focus:ring focus:ring-[#d2b48c] transition"
                                 type="text"
                                 name="photo"
+                                defaultValue={photo}
                                 placeholder="Enter photo URL"
                             />
                         </div>
@@ -174,4 +190,4 @@ const AddCoffee = () => {
     );
 };
 
-export default AddCoffee;
+export default UpdateCoffee;
