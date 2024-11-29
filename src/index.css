@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Rancho&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+nav a.active {
+  color: #331a15;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+nav a.active::before {
+  content: '';
+  width: 100%;
+  background-color: #331a15;
+  height: 2px;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+
+nav a {
+  transition: all 0.3s ease;
+}
+
+nav a:hover {
+  color: #331a15;
+  cursor: pointer;
+}
+
+nav a.active:hover {
+  text-decoration: none;
+}
+
+@layer components {
+  .navBarLink {
+    @apply before:w-0 hover:before:w-full before:bg-[#331a15] before:h-[2px] before:transition-all before:duration-300 before:absolute relative before:rounded-full before:bottom-[-2px] hover:text-[#331a15] transition-all duration-300 before:left-0 cursor-pointer capitalize;
+  }
+
+  .footerLink {
+    @apply text-[0.9rem] hover:text-primary cursor-pointer transition-all duration-200;
+  }
+}
