@@ -72,10 +72,24 @@ const Register = () => {
         }
 
         createUser(email, password)
-            .then(() => {
+            .then((result) => {
                 updateUserProfile({ displayName: fullName, photoURL: photoUrl })
                     .then(() => {
-                        toast.success("Register Successful.")
+                        const creationTime = result?.user?.metadata?.creationTime;
+                        const newUser = { fullName, email, photoUrl, creationTime }
+
+                        fetch('https://espresso-emporium-server-theta.vercel.app/users', {
+                            method: "POST",
+                            headers: {
+                                'content-type': 'application/json'
+                            },
+                            body: JSON.stringify(newUser)
+                        })
+                            .then(res => res.json())
+                            .then(data => {
+                                console.log(data);
+                                toast.success("Register Successful.")
+                            })
                     })
                     .catch(() => {
                         toast.error("Not update Your Profile.")
