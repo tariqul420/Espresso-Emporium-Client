@@ -49,7 +49,9 @@ const CoffeeCart = ({ coffee, coffees, setCoffees }) => {
                 <p><span className="font-bold">Price: </span>${price}</p>
             </div>
             <div className="flex flex-col gap-4">
-                <FaEye size={20} color="#d2b48c" className="cursor-pointer" />
+                <Link to={`/preview/${_id}`}>
+                    <FaEye size={20} color="#d2b48c" className="cursor-pointer" />
+                </Link>
                 <Link to={`/update-coffee/${_id}`}>
                     <FaPencil size={20} color="#3c393b" className="cursor-pointer" />
                 </Link>

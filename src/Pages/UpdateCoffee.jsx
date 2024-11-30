@@ -48,7 +48,7 @@ const UpdateCoffee = () => {
 
     return (
         <div className="w-11/12 md:w-9/12 mx-auto py-10">
-            <h1 className="font-bold text-xl flex gap-3 items-center mb-8">
+            <h1 className="font-bold text-xl flex gap-3 items-center mb-8 font-Rancho">
                 <Link to="/" className="text-gray-600 hover:text-black transition">
                     <FaArrowLeft />
                 </Link>

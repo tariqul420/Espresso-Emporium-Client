@@ -12,7 +12,7 @@ const Navbar = () => {
     <div className={`py-2 rounded-t-3xl w-11/12 mx-auto`}>
       <nav className={`flex items-center justify-between relative boxShadow rounded-full px-[10px] py-[8px] w-11/12 mx-auto my-6 `}>
         <Link to="/">
-          <h1 className={`font-bold text-color-primary text-2xl`}>Espresso Emporium</h1>
+          <h1 className={`font-bold text-color-primary text-4xl font-Rancho`}>Espresso Emporium</h1>
         </Link>
         <ul className="items-center gap-[20px] text-[1rem] text-[#331a15] font-medium lg:flex hidden">
           <NavLink to="/">
@@ -38,9 +38,8 @@ const Navbar = () => {
         </div>
 
         <aside
-          className={` ${
-            mobileSidebarOpen ? 'translate-y-0 opacity-100 z-[2000]' : 'translate-y-[-200px] opacity-0 z-[-1]'
-          } lg:hidden bg-white boxShadow p-4 text-center absolute top-[65px] right-0 w-full rounded-md transition-all duration-300`}
+          className={` ${mobileSidebarOpen ? 'translate-y-0 opacity-100 z-[2000]' : 'translate-y-[-200px] opacity-0 z-[-1]'
+            } lg:hidden bg-white boxShadow p-4 text-center absolute top-[65px] right-0 w-full rounded-md transition-all duration-300`}
         >
           <div className="relative mb-5">
             <input className="py-1.5 pr-4 w-full pl-10 rounded-full border border-gray-200 outline-none focus:border-[#3B9DF8]" placeholder="Search..." />
