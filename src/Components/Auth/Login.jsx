@@ -40,7 +40,7 @@ const Login = () => {
             {
                 location.pathname === '/login' ? (
                     <section className="w-full h-auto flex items-center justify-center sm:py-12 p-6">
-                        <div className="w-full lg:w-[40%] md:w-[60%] bg-white rounded-lg sm:py-6 sm:px-8 p-4 flex flex-col gap-5 shadow-md">
+                        <div className="w-full lg:w-[40%] md:w-[60%] bg-color-bg rounded-lg sm:py-6 sm:px-8 p-4 flex flex-col gap-5 shadow-md">
                             <form onSubmit={handelSignIn} className="w-full flex flex-col gap-5">
                                 <h3 className="text-[1.8rem] font-[700] text-gray-900 text-center">
                                     Login

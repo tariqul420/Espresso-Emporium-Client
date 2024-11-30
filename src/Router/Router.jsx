@@ -6,6 +6,8 @@ import UpdateCoffee from '../Pages/UpdateCoffee';
 import Preview from '../Components/Home/Preview';
 import Login from '../Components/Auth/Login';
 import Register from '../Components/Auth/Register';
+import ForgotPassword from '../Components/Auth/ForgetPassword';
+import Private from './Private';
 
 const router = createBrowserRouter([
     {
@@ -19,21 +21,36 @@ const router = createBrowserRouter([
             },
             {
                 path: '/add-coffee',
-                element: <AddCoffee />
+                element:
+                    <Private>
+                        <AddCoffee />
+                    </Private>
             },
             {
                 path: '/update-coffee/:id',
-                element: <UpdateCoffee />,
+                element:
+                    <Private>
+                        <UpdateCoffee />
+                    </Private>,
                 loader: ({ params }) => fetch(`https://espresso-emporium-server-theta.vercel.app/coffees/${params.id}`)
             },
             {
                 path: '/preview/:id',
-                element: <Preview />,
+                element:
+                    <Private>
+                        <Preview />
+                    </Private>,
                 loader: ({ params }) => fetch(`https://espresso-emporium-server-theta.vercel.app/coffees/${params.id}`)
             },
             {
                 path: '/login',
-                element: <Login />
+                element: <Login />,
+                children: [
+                    {
+                        path: '/login/ForgetPassword',
+                        element: <ForgotPassword />
+                    }
+                ]
             },
             {
                 path: '/register',

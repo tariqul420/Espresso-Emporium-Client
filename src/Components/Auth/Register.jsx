@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,10 +19,6 @@ const Register = () => {
     const [confirmPass, setConfirmPass] = useState("")
     const [signal, setSignal] = useState(" ");
     const [passMatch, setPassMatch] = useState("");
-
-    useEffect(() => {
-        document.title = 'Register | GreenQuest Adventures';
-    }, []);
 
     const handleStrongPasswordChecker = (e) => {
         const password = e.target.value;
