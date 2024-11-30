@@ -76,7 +76,8 @@ const Register = () => {
                 updateUserProfile({ displayName: fullName, photoURL: photoUrl })
                     .then(() => {
                         const creationTime = result?.user?.metadata?.creationTime;
-                        const newUser = { fullName, email, photoUrl, creationTime }
+                        const lastSignInTime = result?.user?.metadata?.lastSignInTime;
+                        const newUser = { fullName, email, photoUrl, creationTime, lastSignInTime }
 
                         fetch('https://espresso-emporium-server-theta.vercel.app/users', {
                             method: "POST",
@@ -86,8 +87,7 @@ const Register = () => {
                             body: JSON.stringify(newUser)
                         })
                             .then(res => res.json())
-                            .then(data => {
-                                console.log(data);
+                            .then(() => {
                                 toast.success("Register Successful.")
                             })
                     })

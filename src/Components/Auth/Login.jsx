@@ -20,9 +20,22 @@ const Login = () => {
         const password = e.target.password.value;
 
         signInUser(email, password)
-            .then(() => {
-                toast.success("Login Successful.")
-                navigate(location.state ? location.state : '/')
+            .then((result) => {
+                const lastSignInTime = result?.user?.metadata?.lastSignInTime;
+                const updateUser = { email, lastSignInTime }
+
+                fetch('https://espresso-emporium-server-theta.vercel.app/users', {
+                    method: 'PATCH',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(updateUser)
+                })
+                    .then(res => res.json())
+                    .then(() => {
+                        toast.success("Login Successful.")
+                        navigate(location.state ? location.state : '/')
+                    })
             })
             .catch((error) => {
                 if (error.code === "auth/invalid-credential") {
