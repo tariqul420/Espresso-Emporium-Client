@@ -1,12 +1,19 @@
 // react icons
 import { IoIosSearch } from 'react-icons/io';
 import { CiMenuFries } from 'react-icons/ci';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa6';
+import { AuthContext } from '../../Provider/AuthProvider';
+import Profile from './Profile';
 
 const Navbar = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const { user, signOutUser } = useContext(AuthContext)
+
+  const handelLogout = () => {
+    signOutUser()
+  }
 
   return (
     <div className={`py-2 rounded-t-3xl w-11/12 mx-auto`}>
@@ -24,15 +31,30 @@ const Navbar = () => {
         </ul>
 
         <div className="items-center gap-[10px] flex">
-          <Link to="/signIn">
-            <button className="relative inline-flex items-center justify-center px-6 py-2.5 overflow-hidden font-bold text-color-primary transition duration-300 ease-out border-2 border-color-primary rounded-full shadow-md group">
-              <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-color-primary group-hover:translate-x-0 ease">
-                <FaArrowRight size={25} />
-              </span>
-              <span className="absolute flex items-center justify-center w-full h-full text-color-primary transition-all duration-300 transform group-hover:translate-x-full ease">Sign In</span>
-              <span className="relative invisible">ZenUI Library</span>
-            </button>
-          </Link>
+          {
+            user && <Profile />
+          }
+          {
+            user ? (
+              <button onClick={handelLogout} className="relative inline-flex items-center justify-center px-6 py-2.5 overflow-hidden font-bold text-color-primary transition duration-300 ease-out border-2 border-color-primary rounded-full shadow-md group">
+                <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-color-primary group-hover:translate-x-0 ease">
+                  <FaArrowRight size={25} />
+                </span>
+                <span className="absolute flex items-center justify-center w-full h-full text-color-primary transition-all duration-300 transform group-hover:translate-x-full ease">Logout</span>
+                <span className="relative invisible">Sign Out</span>
+              </button>
+            ) : (
+              <Link to="/login">
+                <button className="relative inline-flex items-center justify-center px-6 py-2.5 overflow-hidden font-bold text-color-primary transition duration-300 ease-out border-2 border-color-primary rounded-full shadow-md group">
+                  <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-color-primary group-hover:translate-x-0 ease">
+                    <FaArrowRight size={25} />
+                  </span>
+                  <span className="absolute flex items-center justify-center w-full h-full text-color-primary transition-all duration-300 transform group-hover:translate-x-full ease">Login</span>
+                  <span className="relative invisible">Sign Up</span>
+                </button>
+              </Link>
+            )
+          }
 
           <CiMenuFries className="text-[1.8rem] mr-1 text-[#331a15] cursor-pointer lg:hidden flex" onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)} />
         </div>

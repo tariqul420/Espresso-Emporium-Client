@@ -1,12 +1,78 @@
-import { createContext } from "react";
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
+import PropTypes from "prop-types";
+import { createContext, useEffect, useState } from "react";
+import auth from '../Firebase/Firebase'
+import { toast } from "react-toastify";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext()
 
 const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [email, setEmail] = useState('')
+
+    const socialAuth = async (provider) => {
+        setLoading(true)
+        try {
+            await signInWithPopup(auth, provider);
+            toast.success("Login Successful.");
+        } catch (error) {
+            if (error.code === "auth/account-exists-with-different-credential") {
+                toast.error("User already exists!");
+            }
+        }
+    }
+
+    const createUser = (email, password) => {
+        return createUserWithEmailAndPassword(auth, email, password)
+    }
+
+    const signInUser = (email, password) => {
+        return signInWithEmailAndPassword(auth, email, password)
+    }
+
+    const signOutUser = () => {
+        setLoading(true)
+        return signOut(auth)
+    }
+
+    const updateUserProfile = (updatedData) => {
+        return updateProfile(auth.currentUser, updatedData)
+    }
+
+    const resetEmail = (email) => {
+        return sendPasswordResetEmail(auth, email)
+    }
+
+    useEffect(() => {
+        const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+            if (currentUser) {
+                setUser(currentUser)
+            } else {
+                setUser(null)
+            }
+            setLoading(false)
+        })
+
+        return () => {
+            unSubscribe()
+        }
+    }, [])
 
     const authData = {
-        "tariqul": "tariqul",
-        "jannatul": "tariqul",
+        socialAuth,
+        createUser,
+        signInUser,
+        signOutUser,
+        updateUserProfile,
+        resetEmail,
+        setUser,
+        setLoading,
+        setEmail,
+        user,
+        loading,
+        email
     }
 
 
@@ -17,4 +83,7 @@ const AuthProvider = ({ children }) => {
     )
 };
 
+AuthProvider.propTypes = {
+    children: PropTypes.array.isRequired
+}
 export default AuthProvider;

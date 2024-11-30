@@ -4,6 +4,8 @@ import Home from '../Pages/Home';
 import AddCoffee from '../Pages/AddCoffee';
 import UpdateCoffee from '../Pages/UpdateCoffee';
 import Preview from '../Components/Home/Preview';
+import Login from '../Components/Auth/Login';
+import Register from '../Components/Auth/Register';
 
 const router = createBrowserRouter([
     {
@@ -13,7 +15,7 @@ const router = createBrowserRouter([
             {
                 path: '/',
                 element: <Home />,
-                loader: () => fetch('http://localhost:5000/coffees')
+                loader: () => fetch('https://espresso-emporium-server-theta.vercel.app/coffees')
             },
             {
                 path: '/add-coffee',
@@ -22,12 +24,20 @@ const router = createBrowserRouter([
             {
                 path: '/update-coffee/:id',
                 element: <UpdateCoffee />,
-                loader: ({ params }) => fetch(`http://localhost:5000/coffees/${params.id}`)
+                loader: ({ params }) => fetch(`https://espresso-emporium-server-theta.vercel.app/coffees/${params.id}`)
             },
             {
                 path: '/preview/:id',
                 element: <Preview />,
-                loader: ({ params }) => fetch(`http://localhost:5000/coffees/${params.id}`)
+                loader: ({ params }) => fetch(`https://espresso-emporium-server-theta.vercel.app/coffees/${params.id}`)
+            },
+            {
+                path: '/login',
+                element: <Login />
+            },
+            {
+                path: '/register',
+                element: <Register />
             }
         ],
     },
