@@ -2,6 +2,7 @@
 
 import { useContext, useState } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
     const [isProfileHovered, setIsProfileHovered] = useState(false);
@@ -13,10 +14,12 @@ const Profile = () => {
             onMouseLeave={() => setIsProfileHovered(false)}
         >
             {/*  initial profile picture  */}
-            <img
-                src={user?.photoURL}
-                alt="profile"
-                className="w-[50px] h-[50px] rounded-full object-cover border-[3px] cursor-pointer border-color-primary" />
+            <Link to='/my-profile'>
+                <img
+                    src={user?.photoURL}
+                    alt="profile"
+                    className="w-[50px] h-[50px] rounded-full object-cover border-[3px] cursor-pointer border-color-primary" />
+            </Link>
 
             {/*  tooltip  */}
             <div
