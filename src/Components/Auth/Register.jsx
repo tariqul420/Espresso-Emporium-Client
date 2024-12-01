@@ -11,7 +11,7 @@ import { AuthContext } from "../../Provider/AuthProvider";
 const Register = () => {
     const navigate = useNavigate()
     const [active, setActive] = useState(false);
-    const { socialAuth, createUser, updateUserProfile } = useContext(AuthContext);
+    const { socialAuth, createUser, updateUserProfile, emailVerification } = useContext(AuthContext);
     const googleProvider = new GoogleAuthProvider();
 
     const [isEyeOpen, setIsEyeOpen] = useState(false);
@@ -73,27 +73,38 @@ const Register = () => {
 
         createUser(email, password)
             .then((result) => {
-                updateUserProfile({ displayName: fullName, photoURL: photoUrl })
-                    .then(() => {
-                        const creationTime = result?.user?.metadata?.creationTime;
-                        const lastSignInTime = result?.user?.metadata?.lastSignInTime;
-                        const newUser = { fullName, email, photoUrl, creationTime, lastSignInTime }
+                window.open('https://mail.google.com/', '_blank')
+                navigate('/login')
+                console.log(result);
 
-                        fetch('https://espresso-emporium-server-theta.vercel.app/users', {
-                            method: "POST",
-                            headers: {
-                                'content-type': 'application/json'
-                            },
-                            body: JSON.stringify(newUser)
-                        })
-                            .then(res => res.json())
+                emailVerification()
+                    .then(() => {
+                        updateUserProfile({ displayName: fullName, photoURL: photoUrl })
                             .then(() => {
-                                toast.success("Register Successful.")
+                                const creationTime = new Date(result?.user?.metadata?.creationTime).toLocaleString();
+                                const lastSignInTime = new Date(result?.user?.metadata?.lastSignInTime).toLocaleString();
+                                const newUser = { fullName, email, photoUrl, creationTime, lastSignInTime }
+
+                                fetch('https://espresso-emporium-server-theta.vercel.app/users', {
+                                    method: "POST",
+                                    headers: {
+                                        'content-type': 'application/json'
+                                    },
+                                    body: JSON.stringify(newUser)
+                                })
+                                    .then(res => res.json())
+                                    .then(() => {
+                                        toast.success("Register Successful.")
+                                    })
+                            })
+                            .catch(() => {
+                                toast.error("Not update Your Profile.")
                             })
                     })
                     .catch(() => {
-                        toast.error("Not update Your Profile.")
-                    })
+                        toast.error("Failed to send verification email.");
+                    });
+
             })
             .catch((error) => {
                 if (error.code === "auth/email-already-in-use") {
@@ -101,8 +112,6 @@ const Register = () => {
                     return toast.error("User already exists!");
                 }
             });
-
-        navigate("/")
     };
 
     return (

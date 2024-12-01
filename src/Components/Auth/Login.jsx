@@ -10,7 +10,7 @@ const Login = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const [active, setActive] = useState(false);
-    const { signInUser, socialAuth, setEmail } = useContext(AuthContext)
+    const { signInUser, socialAuth, setEmail, signOutUser } = useContext(AuthContext)
 
     const googleProvider = new GoogleAuthProvider();
 
@@ -21,21 +21,26 @@ const Login = () => {
 
         signInUser(email, password)
             .then((result) => {
-                const lastSignInTime = result?.user?.metadata?.lastSignInTime;
-                const updateUser = { email, lastSignInTime }
+                if (result.user.emailVerified) {
+                    const lastSignInTime = result?.user?.metadata?.lastSignInTime;
+                    const updateUser = { email, lastSignInTime }
 
-                fetch('https://espresso-emporium-server-theta.vercel.app/users', {
-                    method: 'PATCH',
-                    headers: {
-                        'content-type': 'application/json'
-                    },
-                    body: JSON.stringify(updateUser)
-                })
-                    .then(res => res.json())
-                    .then(() => {
-                        toast.success("Login Successful.")
-                        navigate(location.state ? location.state : '/')
+                    fetch('https://espresso-emporium-server-theta.vercel.app/users', {
+                        method: 'PATCH',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify(updateUser)
                     })
+                        .then(res => res.json())
+                        .then(() => {
+                            toast.success("Login Successful.")
+                            navigate(location.state ? location.state : '/')
+                        })
+                } else {
+                    signOutUser();
+                    toast.warning("Please verify your account.");
+                }
             })
             .catch((error) => {
                 if (error.code === "auth/invalid-credential") {

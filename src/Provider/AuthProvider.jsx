@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import PropTypes from "prop-types";
 import { createContext, useEffect, useState } from "react";
 import auth from '../Firebase/Firebase'
@@ -34,6 +34,7 @@ const AuthProvider = ({ children }) => {
 
     const signOutUser = () => {
         setLoading(true)
+        setUser(null)
         return signOut(auth)
     }
 
@@ -45,10 +46,18 @@ const AuthProvider = ({ children }) => {
         return sendPasswordResetEmail(auth, email)
     }
 
+    const emailVerification = () => {
+        return sendEmailVerification(auth.currentUser)
+    }
+
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
             if (currentUser) {
-                setUser(currentUser)
+                if (currentUser.emailVerified) {
+                    setUser(currentUser)
+                } else {
+                    setUser(null)
+                }
             } else {
                 setUser(null)
             }
@@ -70,6 +79,7 @@ const AuthProvider = ({ children }) => {
         setUser,
         setLoading,
         setEmail,
+        emailVerification,
         user,
         loading,
         email
