@@ -43,12 +43,12 @@ const CoffeeCart = ({ coffee, coffees, setCoffees }) => {
             <div className="">
                 <img src={photo} className="mix-blend-mode rounded-md" />
             </div>
-            <div className="">
+            <div className="space-y-2">
                 <p><span className="font-bold">Name: </span>{name}</p>
                 <p><span className="font-bold">Chef: </span>{chef}</p>
                 <p><span className="font-bold">Price: </span>${price}</p>
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-6">
                 <Link to={`/preview/${_id}`}>
                     <FaEye size={20} color="#d2b48c" className="cursor-pointer" />
                 </Link>

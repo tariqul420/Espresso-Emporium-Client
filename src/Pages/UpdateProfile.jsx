@@ -27,20 +27,18 @@ const UpdateProfile = () => {
                     body: JSON.stringify(updateProfile)
                 })
                     .then(res => res.json())
-                    .then(data => {
-                        console.log(data);
+                    .then(() => {
+                        setUser((prevUser) => ({
+                            ...prevUser,
+                            displayName: fullName,
+                            photoURL: photoUrl,
+                        }));
+                        toast.success('Update Your Profile')
+                        navigate("/my-profile")
                     })
-
-                setUser((prevUser) => ({
-                    ...prevUser,
-                    displayName: fullName,
-                    photoURL: photoUrl,
-                }));
-                toast.success('Update Your Profile')
-                navigate("/my-profile")
-            })
-            .catch(() => {
-                toast.error("Not update Your Profile.")
+                    .catch(() => {
+                        toast.error("Not update Your Profile.")
+                    })
             })
     }
 
