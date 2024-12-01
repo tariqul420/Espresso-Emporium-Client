@@ -22,10 +22,10 @@ const Login = () => {
         signInUser(email, password)
             .then((result) => {
                 if (result.user.emailVerified) {
-                    const lastSignInTime = result?.user?.metadata?.lastSignInTime;
+                    const lastSignInTime = new Date(result?.user?.metadata?.lastSignInTime).toLocaleString();
                     const updateUser = { email, lastSignInTime }
 
-                    fetch('https://espresso-emporium-server-theta.vercel.app/users', {
+                    fetch('https://espresso-emporium-server-theta.vercel.app/users/lastSignInTime', {
                         method: 'PATCH',
                         headers: {
                             'content-type': 'application/json'

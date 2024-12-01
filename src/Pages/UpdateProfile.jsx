@@ -5,7 +5,7 @@ import { AuthContext } from "../Provider/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
 const UpdateProfile = () => {
-    const { updateUserProfile, setUser } = useContext(AuthContext)
+    const { updateUserProfile, setUser, user } = useContext(AuthContext)
     const navigate = useNavigate()
 
     const handelUpdateProfile = (e) => {
@@ -13,21 +13,35 @@ const UpdateProfile = () => {
 
         const fullName = e.target.fullName.value;
         const photoUrl = e.target.photoUrl.value;
+        const email = user.email
 
         updateUserProfile({ displayName: fullName, photoURL: photoUrl })
             .then(() => {
+                const updateProfile = { fullName, photoUrl, email }
+
+                fetch('https://espresso-emporium-server-theta.vercel.app/users/updateUserProfile', {
+                    method: 'PATCH',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(updateProfile)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                    })
+
                 setUser((prevUser) => ({
                     ...prevUser,
                     displayName: fullName,
                     photoURL: photoUrl,
                 }));
                 toast.success('Update Your Profile')
+                navigate("/my-profile")
             })
             .catch(() => {
                 toast.error("Not update Your Profile.")
             })
-
-        navigate("/my-profile")
     }
 
     return (
